@@ -1,10 +1,13 @@
-const  express = require('express');
+const express = require('express');
+const mongoose = require('mongoose');
+
 const app = express();
 require('dotenv').config();
 
 
+
 app.get('/', (req, res) => {
-    res.send({message: "hello developers"})
+    res.send({ message: "hello developers" })
 })
 
 const port = process.env.PORT || 3000;
