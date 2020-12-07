@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose');
 const crypto = require('crypto');
-const uuid = require('uuid/v1');
+const uuid = require('uuid').v1;
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     },
 
     salt: {
-        type: String,
+        type: String
     },
 
     about: {
@@ -69,3 +69,5 @@ userSchema.methods = {
         }
     }
 }
+
+module.exports = mongoose.model('User', userSchema);
