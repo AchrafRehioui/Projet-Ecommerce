@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const expressValidator = require('express-validator');
+
 
 
 //Import Routes
@@ -21,11 +23,12 @@ mongoose.connect(process.env.DATABASE, {
 
 //Middlewares
 app.use(express.json())
+app.use(expressValidator())
+
 
 
 //Routes Middleware
 app.use('/api/users', userRoutes);
-
 
 
 
