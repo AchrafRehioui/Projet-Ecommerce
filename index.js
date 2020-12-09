@@ -6,7 +6,7 @@ const expressValidator = require('express-validator');
 
 
 //Import Routes
-const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
 
 //Config App
 const app = express();
@@ -30,7 +30,7 @@ app.use(expressValidator())
 
 
 //Routes Middleware
-app.use('/api/users', userRoutes);
+app.use('/api', authRoutes);
 
 
 
