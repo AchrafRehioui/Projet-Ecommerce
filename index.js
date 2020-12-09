@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const expressValidator = require('express-validator');
 
 
@@ -23,6 +24,7 @@ mongoose.connect(process.env.DATABASE, {
 
 //Middlewares
 app.use(express.json())
+app.use(cookieParser())
 app.use(expressValidator())
 
 
