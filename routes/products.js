@@ -4,13 +4,15 @@ const { userById } = require('../middlewares/user');
 
 const router = express.Router();
 
-const { createProduct, showProduct, productById } = require('../controllers/productController');
+const { createProduct, showProduct, productById, removeProduct } = require('../controllers/productController');
 
 const { requireSignIn, isAuth, isAdmin } = require('../middlewares/auth');
 
 router.get('/:productId', showProduct);
 
 router.post('/create/:userId', [requireSignIn, isAuth, isAdmin], createProduct);
+
+router.delete('/:productId/:userId', [requireSignIn, isAuth, isAdmin], removeProduct)
 
 router.param('userId', userById);
 

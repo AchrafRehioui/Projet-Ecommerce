@@ -93,3 +93,23 @@ exports.showProduct = (req, res) => {
         product: req.product
     })
 }
+
+
+exports.removeProduct = (req, res) => {
+
+    let product = req.product
+
+    product.remove((err, product) => {
+
+        if (err) {
+            return res.status(404).json({
+                error: "Product not found !"
+            })
+        }
+
+        res.status(204).json({})
+
+    })
+
+}
+
