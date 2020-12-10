@@ -10,6 +10,12 @@ exports.requireSignIn = expressJWT({
 
 exports.isAuth = (req, res, next) => {
 
+    //All access for Admin 
+
+    // if (req.auth.role == 1) {
+    //     return next();
+    // }
+
     let user = req.profile && req.auth && (req.profile._id == req.auth._id)
 
     if (!user) {
