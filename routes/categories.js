@@ -5,12 +5,16 @@ const { userById } = require('../middlewares/user');
 
 const router = express.Router();
 
-const { createCategory } = require('../controllers/categoryController');
+const { createCategory, categoryId, showCategory } = require('../controllers/categoryController');
 
 const { requireSignIn, isAuth, isAdmin } = require('../middlewares/auth');
 
 router.post('/create/:userId', [requireSignIn, isAuth, isAdmin], createCategory);
 
-router.param('userId', userById)
+router.get('/:categoryId', showCategory);
+
+router.param('userId', userById);
+
+router.param('categoryId', categoryId);
 
 module.exports = router;
