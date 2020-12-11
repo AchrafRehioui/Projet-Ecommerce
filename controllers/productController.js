@@ -183,7 +183,7 @@ exports.allProducts = (req, res) => {
 
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
     let order = req.query.order ? req.query.order : 'asc';
-    let limit = req.query.limit ? req.query.limit : 6;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
     Product.find()
         .select("-photo")
@@ -201,6 +201,30 @@ exports.allProducts = (req, res) => {
             res.json({
                 products
             })
+        })
+
+}
+
+exports.relatedProduct = (req, res) => {
+
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+    Product.find({ category: req.product.category, _id: { $ne: req.product._id } })
+        .limit(limit)
+        .select('-photo')
+        .populate('category', '_id name')
+        .exec((err, products) => {
+
+            if (err) {
+                return res.status(404).json({
+                    error: "Products not found !"
+                })
+            }
+
+            res.json({
+                products
+            })
+
         })
 
 }
