@@ -4,7 +4,7 @@ const { userById } = require('../middlewares/user');
 
 const router = express.Router();
 
-const { createProduct, showProduct, productById, removeProduct, updateProduct, allProducts, relatedProduct } = require('../controllers/productController');
+const { createProduct, showProduct, productById, removeProduct, updateProduct, allProducts, relatedProduct, SearchProduct } = require('../controllers/productController');
 
 const { requireSignIn, isAuth, isAdmin } = require('../middlewares/auth');
 
@@ -15,6 +15,8 @@ router.get('/:productId', showProduct);
 router.get('/related/:productId', relatedProduct);
 
 router.post('/create/:userId', [requireSignIn, isAuth, isAdmin], createProduct);
+
+router.post('/search', SearchProduct);
 
 router.put('/:productId/:userId', [requireSignIn, isAuth, isAdmin], updateProduct)
 

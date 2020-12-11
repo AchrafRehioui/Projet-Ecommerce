@@ -228,3 +228,48 @@ exports.relatedProduct = (req, res) => {
         })
 
 }
+
+exports.SearchProduct = (req, res) => {
+
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+    let order = req.query.order ? req.query.order : 'asc';
+    let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+    let skip = parseInt(req.body.skip);
+    let findArgs = {};
+    
+
+    for (let key in req.body.filters) {
+        if (req.body.filters[key].length > 0) {
+            if (key === "price") {
+                // gte -  greater than price [0-10]
+                // lte - less than
+                findArgs[key] = {
+                    $gte: req.body.filters[key][0],
+                    $lte: req.body.filters[key][1]
+                };
+            } else {
+                findArgs[key] = req.body.filters[key];
+            }
+        }
+    }
+
+    Product.find(findArgs)
+           .select("-photo")
+           .populate('category')
+           .sort([[sortBy, order]])
+           .limit(limit)
+           .skip(skip)
+           .exec((err, products) => {
+
+              if(err) {
+                  return res.status(404).json({
+                      error: "Products not found !"
+                  })
+              }
+
+              res.json({
+                  products
+              })
+           })
+
+}
