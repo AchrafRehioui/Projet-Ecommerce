@@ -1,6 +1,6 @@
 const express = require('express');
-const { userById } = require('../middlewares/user');
 
+const { userById } = require('../middlewares/user');
 
 const router = express.Router();
 
@@ -19,7 +19,6 @@ router.post('/create/:userId', [requireSignIn, isAuth, isAdmin], createProduct);
 router.post('/search', SearchProduct);
 
 router.get('/photo/:productId', photoProduct);
-
 
 router.put('/:productId/:userId', [requireSignIn, isAuth, isAdmin], updateProduct)
 
