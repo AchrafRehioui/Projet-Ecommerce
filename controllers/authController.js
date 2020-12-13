@@ -12,7 +12,11 @@ exports.signup = (req, res) => {
     user.save((err, user) => {
         if (err) {
             return res.status(400).send(err)
-        }
+        }   
+
+        //in order to not show the password in Json
+        user.hashed_password = undefined
+        user.salt = undefined
         res.send(user)
     })
 }
