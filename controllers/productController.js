@@ -185,7 +185,19 @@ exports.allProducts = (req, res) => {
     let order = req.query.order ? req.query.order : 'asc';
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
-    Product.find()
+    let query = {};
+
+    let { search, category } = req.query;
+
+    if (search) {
+        query.name = { $regex: search, $option: 'i' };
+    }
+    
+    if( category ){
+        query.category = category 
+    }
+
+    Product.find(query)
         .select("-photo")
         .populate('category')
         .sort([[sortBy, order]])
@@ -233,7 +245,7 @@ exports.SearchProduct = (req, res) => {
 
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
     let order = req.query.order ? req.query.order : 'asc';
-    let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+    let limit = req.body.limit ? parseInt(req.body.limit) : 100;
     let skip = parseInt(req.body.skip);
     let findArgs = {};
 
