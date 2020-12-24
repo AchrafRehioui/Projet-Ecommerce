@@ -4,12 +4,13 @@ const { userById } = require('../middlewares/user');
 
 const { requireSignIn, isAuth, isAdmin } = require('../middlewares/auth');
 
-const { generateToken } = require('./../controllers/braintreeController');
+const { generateToken, processPayment } = require('./../controllers/braintreeController');
 
 const router = express.Router();
 
 
-router.get('/getToken/:userId', [requireSignIn, isAuth, isAdmin], generateToken);
+router.get('/getToken/:userId', [requireSignIn, isAuth], generateToken);
+router.post('/purchase/:userId', [requireSignIn, isAuth], processPayment);
 
 router.param('userId', userById);
 
