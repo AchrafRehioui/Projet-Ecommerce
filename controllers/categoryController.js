@@ -29,7 +29,6 @@ exports.categoryId = (req, res, next, id) => {
             })
         }
 
-        //in case of the middleware
         req.category = category;
         next()
     })
@@ -46,7 +45,6 @@ exports.showCategory = (req, res) => {
     })
 }
 
-
 exports.updateCategory = (req, res) => {
 
     let category = req.category;
@@ -55,7 +53,7 @@ exports.updateCategory = (req, res) => {
 
     category.save((err, category) => {
 
-        if(err) {
+        if (err) {
             return res.status(400).json({
                 error: "bad request !"
             })
@@ -77,7 +75,7 @@ exports.deleteCategory = (req, res) => {
 
     category.remove((err, category) => {
 
-        if(err) {
+        if (err) {
             return res.status(404).json({
                 error: "category not found !"
             })
@@ -91,10 +89,11 @@ exports.deleteCategory = (req, res) => {
 
 }
 
+
 exports.allCategories = (req, res) => {
 
     Category.find().exec((err, categories) => {
-        if(err){
+        if (err) {
             return res.status(500).json({
                 error: err
             })

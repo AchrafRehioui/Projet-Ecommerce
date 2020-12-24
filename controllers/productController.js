@@ -1,12 +1,9 @@
 const Product = require('../models/product');
-
 const _ = require('lodash');
-
 const fs = require('fs');
-
 const Joi = require('joi');
 
-const formidable = require('formidable');
+const formidable = require('formidable')
 
 exports.createProduct = (req, res) => {
 
@@ -22,6 +19,7 @@ exports.createProduct = (req, res) => {
             })
         }
 
+
         let product = new Product(fields);
 
         if (files.photo) {
@@ -35,7 +33,6 @@ exports.createProduct = (req, res) => {
             product.photo.data = fs.readFileSync(files.photo.path)
             product.photo.contentType = files.photo.type
         }
-
 
         const schema = Joi.object({
             name: Joi.string().required(),
@@ -53,11 +50,10 @@ exports.createProduct = (req, res) => {
             })
         }
 
-
         product.save((err, product) => {
             if (err) {
                 return res.status(400).json({
-                    err: 'product not persist'
+                    err: 'Product not persist '
                 })
             }
 
@@ -68,6 +64,7 @@ exports.createProduct = (req, res) => {
 
     })
 }
+
 
 
 exports.productById = (req, res, next, id) => {
@@ -87,6 +84,7 @@ exports.productById = (req, res, next, id) => {
 
 }
 
+
 exports.showProduct = (req, res) => {
 
     req.product.photo = undefined;
@@ -96,24 +94,6 @@ exports.showProduct = (req, res) => {
     })
 }
 
-
-exports.removeProduct = (req, res) => {
-
-    let product = req.product
-
-    product.remove((err, product) => {
-
-        if (err) {
-            return res.status(404).json({
-                error: "Product not found !"
-            })
-        }
-
-        res.status(204).json({})
-
-    })
-
-}
 
 exports.updateProduct = (req, res) => {
 
@@ -179,25 +159,62 @@ exports.updateProduct = (req, res) => {
 }
 
 
+
+exports.productById = (req, res, next, id) => {
+
+    Product.findById(id)
+        .populate('category')
+        .exec((err, product) => {
+
+            if (err || !product) {
+                return res.status(404).json({
+                    error: 'Product not found !'
+                })
+            }
+
+            req.product = product;
+            next()
+
+        })
+
+}
+
+
+exports.showProduct = (req, res) => {
+
+    req.product.photo = undefined;
+
+    res.json({
+        product: req.product
+    })
+}
+
+
+exports.removeProduct = (req, res) => {
+
+    let product = req.product
+
+    product.remove((err, product) => {
+
+        if (err) {
+            return res.status(404).json({
+                error: "Product not found !"
+            })
+        }
+
+        res.status(204).json({})
+
+    })
+
+}
+
 exports.allProducts = (req, res) => {
 
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
     let order = req.query.order ? req.query.order : 'asc';
-    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 100;
 
-    let query = {};
-
-    let { search, category } = req.query;
-
-    if (search) {
-        query.name = { $regex: search, $option: 'i' };
-    }
-    
-    if( category ){
-        query.category = category 
-    }
-
-    Product.find(query)
+    Product.find()
         .select("-photo")
         .populate('category')
         .sort([[sortBy, order]])
@@ -219,7 +236,7 @@ exports.allProducts = (req, res) => {
 
 exports.relatedProduct = (req, res) => {
 
-    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 4;
 
     Product.find({ category: req.product.category, _id: { $ne: req.product._id } })
         .limit(limit)
@@ -245,7 +262,7 @@ exports.SearchProduct = (req, res) => {
 
     let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
     let order = req.query.order ? req.query.order : 'asc';
-    let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 100;
     let skip = parseInt(req.body.skip);
     let findArgs = {};
 
