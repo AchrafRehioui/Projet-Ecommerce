@@ -12,6 +12,7 @@ const userRoutes = require('./routes/users');
 const categoryRoutes = require('./routes/categories');
 const productRoutes = require('./routes/products');
 const braintreeRoutes = require('./routes/braintree');
+const orderRoutes = require('./routes/orders');
 
 
 
@@ -43,6 +44,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/braintree', braintreeRoutes);
+app.use('/api/order', orderRoutes);
 
 
 const port = process.env.PORT || 3000;
