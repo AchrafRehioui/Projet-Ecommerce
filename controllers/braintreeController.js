@@ -20,11 +20,13 @@ exports.generateToken = (req, res) => {
 
 exports.processPayment = (req, res) => {
 
-    let { amount, paymentMethodNone } = req.body;
+    let { amount, paymentMethodNonce } = req.body;
+
+    console.log(req.body);
 
     gateway.transaction.sale({
         amount,
-        paymentMethodNone,
+        paymentMethodNonce,
         options: {
             submitForSettlement: true
         }
