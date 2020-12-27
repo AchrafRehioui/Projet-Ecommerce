@@ -39,3 +39,17 @@ exports.listOrders = (req, res) => {
 exports.getStatus = (req, res) => {
     res.json({ status: Order.schema.path('status').enumValues })
 }
+
+exports.updateOrderStatus = (req, res) => {
+
+    Order.update(
+        { _id: req.order._id },
+        { $set: { status: req.body.status } },
+        (err, data) => {
+            if (err) {
+                return res.status(400).json({ error: err.message })
+            }
+            res.json(data)
+        }
+    )
+}
